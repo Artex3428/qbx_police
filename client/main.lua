@@ -41,7 +41,12 @@ local function removeBlips()
     dutyBlips = {}
 end
 
+local function resetRestraintStates()
+    TriggerEvent('police:client:ResetRestraints')
+end
+
 AddEventHandler('QBCore:Client:OnPlayerLoaded', function()
+    resetRestraintStates()
     TriggerServerEvent('police:server:SetHandcuffStatus', false)
     TriggerServerEvent('police:server:UpdateCurrentCops')
 
@@ -72,6 +77,7 @@ AddEventHandler('QBCore:Client:OnPlayerLoaded', function()
 end)
 
 RegisterNetEvent('QBCore:Client:OnPlayerUnload', function()
+    resetRestraintStates()
     TriggerServerEvent('police:server:SetHandcuffStatus', false)
     TriggerServerEvent('police:server:UpdateCurrentCops')
     IsEscorted = false
@@ -156,8 +162,8 @@ end)
 
 if not isUsingXTPrison then
     RegisterNetEvent('police:client:SendToJail', function(time)
+        resetRestraintStates()
         TriggerServerEvent('police:server:SetHandcuffStatus', false)
-        IsEscorted = false
         ClearPedTasks(cache.ped)
         DetachEntity(cache.ped, true, false)
         TriggerEvent('prison:client:Enter', time)

@@ -63,11 +63,6 @@ RegisterNetEvent('police:server:SendTrackerLocation', function(coords, requestId
 end)
 
 -- Items
-exports.qbx_core:CreateUseableItem('handcuffs', function(source)
-    local player = exports.qbx_core:GetPlayer(source)
-    if not player.Functions.GetItemByName('handcuffs') then return end
-    TriggerClientEvent('police:client:CuffPlayerSoft', source)
-end)
 
 exports.qbx_core:CreateUseableItem('moneybag', function(source, item)
     if not item.info or item.info == '' then return end
@@ -215,32 +210,36 @@ local function isTargetTooFar(src, targetSrc, maxDistance)
     end
 end
 
-lib.callback.register('police:server:CuffPlayer', function(src, cuffedSrc, isSoftcuff)
-    if isTargetTooFar(src, cuffedSrc) then return end
-
-    local player = exports.qbx_core:GetPlayer(src)
-    if not player then return end
-    local cuffedPlayer = exports.qbx_core:GetPlayer(cuffedSrc)
-    if not cuffedPlayer or not player.Functions.GetItemByName('handcuffs') then return end
-
-    TriggerClientEvent('police:client:GetCuffed', cuffedPlayer.PlayerData.source, player.PlayerData.source, isSoftcuff)
-
-    return true
-end)
-
-RegisterNetEvent('police:server:EscortPlayer', function(escortSrc)
+RegisterNetEvent('police:server:EscortPlayer', function(targetSrc)
     local src = source
-    if isTargetTooFar(src, escortSrc) then return end
+
+    if isTargetTooFar(src, targetSrc) then return end
 
     local player = exports.qbx_core:GetPlayer(src)
-    if not player then return end
-    local escortPlayer = exports.qbx_core:GetPlayer(escortSrc)
-    if not escortPlayer then return end
+    local targetPlayer = exports.qbx_core:GetPlayer(targetSrc)
 
-    if (player.PlayerData.job.type == 'leo' or player.PlayerData.job.type == 'ems') or (escortPlayer.PlayerData.metadata.ishandcuffed or escortPlayer.PlayerData.metadata.isdead or escortPlayer.PlayerData.metadata.inlaststand) then
-        TriggerClientEvent('police:client:GetEscorted', escortPlayer.PlayerData.source, player.PlayerData.source)
+    if not player or not targetPlayer then return end
+
+    local metadata = targetPlayer.PlayerData.metadata
+
+    if not (
+        metadata.ishandcuffed
+        or metadata.isdead
+        or metadata.inlaststand
+    ) then
+        return exports.qbx_core:Notify(
+            src,
+            locale('error.not_cuffed_dead'),
+            'error'
+        )
+    end
+
+    local targetState = Player(targetSrc).state
+
+    if targetState.isEscorted then
+        targetState:set('isEscorted', false, true)
     else
-        exports.qbx_core:Notify(src, locale('error.not_cuffed_dead'), 'error')
+        targetState:set('isEscorted', src, true)
     end
 end)
 

@@ -23,6 +23,12 @@ server_scripts {
     'server/*.lua'
 }
 
+dependencies {
+    "ox_target",
+    "ox_inventory",
+    "ox_lib"
+}
+
 ui_page 'html/index.html'
 
 files {
@@ -33,8 +39,14 @@ files {
     'html/main.css',
     'config/client.lua',
     'config/shared.lua',
-    'locales/*.json'
+    'locales/*.json',
+    "audiodata/nd_police.dat54.rel",
+    "audiodirectory/nd_police.awc"
 }
+
+data_file "DLC_ITYP_REQUEST" "stream/cuffs_main.ytyp"
+data_file "AUDIO_WAVEPACK" "audiodirectory"
+data_file "AUDIO_SOUNDDATA" "audiodata/nd_police.dat"
 
 lua54 'yes'
 use_experimental_fxv2_oal 'yes'
