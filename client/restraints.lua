@@ -66,9 +66,9 @@ local handsAnim = {
 }
 
 local function handsUpGround(ped)
-    -- local isProne = exports['crouch_crawl']:IsPlayerProne()
-    -- local isCrawling = exports['crouch_crawl']:IsPlayerCrawling()
-    -- if isProne or isCrawling then return end
+    local isProne = exports['crouch_crawl']:IsPlayerProne()
+    local isCrawling = exports['crouch_crawl']:IsPlayerCrawling()
+    if isProne or isCrawling then return end
 
     if not handsUpStatus then return end
     lib.requestAnimDict("random@arrests")
@@ -83,9 +83,9 @@ local function handsUpGround(ped)
 end
 
 local function toggleHandsUp(status, animType)
-    -- local isProne = exports['crouch_crawl']:IsPlayerProne()
-    -- local isCrawling = exports['crouch_crawl']:IsPlayerCrawling()
-    -- if isProne or isCrawling then return end
+    local isProne = exports['crouch_crawl']:IsPlayerProne()
+    local isCrawling = exports['crouch_crawl']:IsPlayerCrawling()
+    if isProne or isCrawling then return end
 
     local state = Player(cache.serverId).state
     if state.gettingCuffed or state.isCuffed or state.isCuffing or state.isInEmote then return end 
