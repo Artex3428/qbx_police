@@ -608,3 +608,5 @@ RegisterNetEvent('police:client:ResetRestraints', function()
 
     IsEscorted = false
 end)
+
+exports('toggleHandsUp', toggleHandsUp)
