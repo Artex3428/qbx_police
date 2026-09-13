@@ -44,7 +44,7 @@ files {
     "audiodirectory/nd_police.awc"
 }
 
-data_file "DLC_ITYP_REQUEST" "stream/cuffs_main.ytyp"
+data_file "DLC_ITYP_REQUEST" "stream_enhanced/cuffs_main.ytyp"
 data_file "AUDIO_WAVEPACK" "audiodirectory"
 data_file "AUDIO_SOUNDDATA" "audiodata/nd_police.dat"
 
